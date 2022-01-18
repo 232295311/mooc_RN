@@ -7,6 +7,7 @@ export default {
     'auth-token': 'fd82d1e882462e23b8e88aa82198f166',
   },
   url: 'https://api.devio.org/uapi/',
+  apiDoc: 'https://api.devio.org/uapi/swagger-ui.html#/Account/loginUsingPOST',
   login: {
     api: 'user/login',
   },

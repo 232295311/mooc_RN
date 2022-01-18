@@ -1,15 +1,40 @@
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {Linking, SafeAreaView, StyleSheet, View} from 'react-native';
 import {Input, ConfirmButton, Tips, NavBar} from '../common/LoginComponent';
+import Constants from '../expand/dao/Constants';
+import LoginDao from '../expand/dao/LoginDao';
 export default (props: any) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('登陆报错错误信息默认值');
   const [helpUrl, setHelpUrl] = useState('https://www.baidu.com');
-  const onClick = () => {};
+  const onLogin = () => {
+    if (userName === '' || password === '') {
+      setMsg('用户名或密码不能为空');
+      return;
+    }
+    setHelpUrl('');
+    setMsg('');
+    LoginDao.getInstance()
+      .login(userName, password)
+      .then(res => {
+        setMsg('登陆成功');
+      })
+      .catch(e => {
+        const {code, data: {helpUrl = ''} = {}, msg} = e;
+        setMsg(msg);
+        setHelpUrl(helpUrl);
+      });
+  };
   return (
     <SafeAreaView style={styles.root}>
-      <NavBar title="登陆" rightTitle="注册" />
+      <NavBar
+        title="登陆"
+        rightTitle="注册"
+        onRightClick={() => {
+          Linking.openURL(Constants.apiDoc);
+        }}
+      />
       <View style={styles.line} />
       <View style={styles.content}>
         <Input
@@ -24,7 +49,7 @@ export default (props: any) => {
           secure={true}
           onChangeText={(text: string) => setPassword(text)}
         />
-        <ConfirmButton title="登陆"></ConfirmButton>
+        <ConfirmButton title="登陆" onClick={onLogin}></ConfirmButton>
         <Tips msg={msg} helpUrl={helpUrl}></Tips>
       </View>
     </SafeAreaView>

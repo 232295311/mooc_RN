@@ -1,3 +1,4 @@
+import {getBoarding} from '../../utils/BoardingUtil';
 import Constants from './Constants';
 /**
  * 发送get请求  类似python里 requests.get
@@ -5,11 +6,13 @@ import Constants from './Constants';
  */
 export function get(api: string) {
   return async (params?: {}) => {
+    const boarding = await getBoarding();
     const {headers, url} = Constants;
     return handleData(
       fetch(buildParams(url + api, params), {
         headers: {
           ...headers,
+          'boarding-pass': boarding || '',
         },
       }),
     );
@@ -27,6 +30,7 @@ export function post(api: string) {
    */
   return (params: {}) => {
     return async (queryParams?: {} | string) => {
+      const boarding = await getBoarding();
       const {headers, url} = Constants;
       var data = params instanceof FormData ? params : JSON.stringify(params);
       return handleData(
@@ -36,6 +40,7 @@ export function post(api: string) {
           headers: {
             'content-type': 'application/json',
             ...headers,
+            'boarding-pass': boarding || '',
           },
         }),
       );
