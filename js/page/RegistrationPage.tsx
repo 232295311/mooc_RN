@@ -1,27 +1,24 @@
 import React, {useState} from 'react';
-import {Linking, SafeAreaView, StyleSheet, View} from 'react-native';
-import {Input, ConfirmButton, Tips, NavBar} from '../common/LoginComponent';
-import Constants from '../expand/dao/Constants';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import LoginDao from '../expand/dao/LoginDao';
+import {ConfirmButton, Input, NavBar, Tips} from '../common/LoginComponent';
 import NavigationUtil from '../navigator/NavigationUtil';
+
 export default (props: any) => {
   const {navigation} = props;
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [msg, setMsg] = useState('登陆报错错误信息默认值');
-  const [helpUrl, setHelpUrl] = useState('https://www.baidu.com');
+  const [imId, setImId] = useState('');
+  const [orderId, setOrderId] = useState('');
+  const [msg, setMsg] = useState('');
+  const [helpUrl, setHelpUrl] = useState('');
   const onLogin = () => {
-    if (userName === '' || password === '') {
-      setMsg('用户名或密码不能为空');
-      return;
-    }
     setHelpUrl('');
     setMsg('');
     LoginDao.getInstance()
-      .login(userName, password)
+      .registration(userName, password, imId, orderId)
       .then(res => {
-        setMsg('登陆成功');
-        NavigationUtil.resetToHomePage({navigation});
+        //todo 跳转到登录
       })
       .catch(e => {
         const {code, data: {helpUrl = ''} = {}, msg} = e;
@@ -32,14 +29,15 @@ export default (props: any) => {
   return (
     <SafeAreaView style={styles.root}>
       <NavBar
-        title="登陆"
-        rightTitle="注册"
+        title="注册"
+        rightTitle="登录"
         onRightClick={() => {
-          NavigationUtil.resetToRegistrationPage({navigation});
+          NavigationUtil.resetToLoginPage({navigation});
         }}
       />
       <View style={styles.line} />
       <View style={styles.content}>
+        <View style={styles.line} />
         <Input
           label="用户名"
           placeholder="请输入用户名"
@@ -49,11 +47,23 @@ export default (props: any) => {
         <Input
           label="密码"
           placeholder="请输入密码"
+          shortLine={true}
           secure={true}
           onChangeText={(text: string) => setPassword(text)}
         />
-        <ConfirmButton title="登陆" onClick={onLogin}></ConfirmButton>
-        <Tips msg={msg} helpUrl={helpUrl}></Tips>
+        <Input
+          label="慕课网ID"
+          placeholder="请输入你的慕课网用户ID"
+          shortLine={true}
+          onChangeText={(text: string) => setImId(text)}
+        />
+        <Input
+          label="课程订单号"
+          placeholder="请输入课程订单号"
+          onChangeText={(text: string) => setOrderId(text)}
+        />
+        <ConfirmButton title="注册" onClick={onLogin} />
+        <Tips msg={msg} helpUrl={helpUrl} />
       </View>
     </SafeAreaView>
   );
@@ -67,6 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F1F5F6',
     flexGrow: 1,
   },
+
   line: {
     height: 0.5,
     backgroundColor: '#D0D4D4',

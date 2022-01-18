@@ -2,6 +2,15 @@ import {StackActions} from '@react-navigation/native';
 
 /**
  * 全局导航跳转工具类 by siyuan.chen
+ *
+ * navigation属性
+ * 在你的应用程序中的每个页面都将接收到一个导航属性，其中包含以下内容：
+ *
+ * navigate - (助手) 链接到其他页面
+ * state - 页面当前的状态/路由
+ * setParams - (助手) 修改路由的参数
+ * goBack - (助手) 关闭当前页面并返回上一页
+ * dispatch - 向路由分发一个事件
  */
 export default class NavigationUtil {
   /**
@@ -31,6 +40,10 @@ export default class NavigationUtil {
    * 重置到首页
    */
   static resetToHomePage(params) {
+    /**
+     * StackActions 是一个对象，其中包含用于生成特定于基于堆栈的导航器的操作的方法。
+     * 它的方法扩展了 CommonActions 中可用的操作。
+     */
     const {navigation} = params;
     if (!navigation) {
       navigation = NavigationUtil.navigation;
@@ -46,5 +59,15 @@ export default class NavigationUtil {
       navigation = NavigationUtil.navigation;
     }
     navigation.dispatch(StackActions.replace('LoginPage', {}));
+  }
+  /**
+   * 重置到注册页
+   */
+  static resetToRegistrationPage(params) {
+    const {navigation} = params;
+    if (!navigation) {
+      navigation = NavigationUtil.navigation;
+    }
+    navigation.dispatch(StackActions.replace('RegistrationPage', {}));
   }
 }

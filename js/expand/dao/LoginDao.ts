@@ -13,6 +13,11 @@ export default class LoginDao {
     }
     return LoginDao.instance;
   }
+  /**
+   * 登陆
+   * @param userName 需要先注册
+   * @param password
+   */
   login(userName: string, password: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const {
@@ -34,6 +39,45 @@ export default class LoginDao {
         .catch(e => {
           console.log(e);
           reject({code: -1, msg: '登陆出错了'});
+        });
+    });
+  }
+
+  /**
+   * 注册
+   * @param userName
+   * @param password
+   * @param imoocId 慕课网ID，从https://www.imooc.com/user/setbindsns 上获取
+   * @param orderId 课程订单号
+   */
+  registration(
+    userName: string,
+    password: string,
+    imoocId: string,
+    orderId: string,
+  ): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const {
+        registration: {api},
+      } = Constants;
+      const formData = new FormData();
+      formData.append('userName', userName);
+      formData.append('password', password);
+      formData.append('imoocId', imoocId);
+      formData.append('orderId', orderId);
+      post(api)(formData)()
+        .then((res: any) => {
+          const {code, data, msg} = res;
+          if (code === 0) {
+            saveBoarding(data);
+            resolve(data || msg);
+          } else {
+            reject(res);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+          reject({code: -1, msg: '哎呀出错了'});
         });
     });
   }

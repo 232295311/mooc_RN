@@ -90,7 +90,7 @@ function handleData(doAction: Promise<any>) {
 function buildParams(url: string, params?: {} | string): string {
   let newUrl = new URL(url),
     finalUrl;
-  debugger;
+  //   debugger;
   if (typeof params === 'object') {
     for (const [key, value] of Object.entries(params)) {
       newUrl.searchParams.append(key, value as string);
