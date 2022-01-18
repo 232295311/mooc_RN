@@ -9,7 +9,7 @@ export function saveBoarding(data: string) {
 }
 
 /**
- * 获取登陆态
+ * 获取登陆态 AsyncStorage只有在删除了App再重新安装后才能重置
  * @returns
  */
 export async function getBoarding() {

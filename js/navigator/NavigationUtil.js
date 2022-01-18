@@ -43,6 +43,7 @@ export default class NavigationUtil {
     /**
      * StackActions 是一个对象，其中包含用于生成特定于基于堆栈的导航器的操作的方法。
      * 它的方法扩展了 CommonActions 中可用的操作。
+     * 使用replace将不能返回到上一页，除非它之前路由栈中有内容
      */
     const {navigation} = params;
     if (!navigation) {

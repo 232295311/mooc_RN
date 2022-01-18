@@ -23,6 +23,11 @@ export default function App() {
       <Stack.Navigator>
         {/* 按顺序显示 第一个Screen在进入app的时候显示 */}
         <Stack.Screen
+          name="WelcomePage"
+          component={WelcomePage}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="LoginPage"
           component={LoginPage}
           options={{headerShown: false}}
@@ -60,11 +65,6 @@ export default function App() {
         <Stack.Screen
           name="CustomKeyPage"
           component={CustomKeyPage}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="WelcomePage"
-          component={WelcomePage}
           options={{headerShown: false}}
         />
         <Stack.Screen
