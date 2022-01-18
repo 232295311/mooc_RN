@@ -4,7 +4,7 @@ export default class Index extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>最热</Text>
+        <Text>我的页面</Text>
       </View>
     );
   }
