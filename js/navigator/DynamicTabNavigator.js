@@ -10,6 +10,8 @@ import TrendingPage from '../page/TrendingPage';
 import FavoritePage from '../page/FavoritePage';
 import MyPage from '../page/MyPage';
 
+import {connect} from 'react-redux';
+
 const Tab = createBottomTabNavigator();
 const TABS = {
   // 在这里配置页面的路由
@@ -58,11 +60,15 @@ const TABS = {
   },
 };
 
-export default class DynamicTabNavigator extends Component {
+class DynamicTabNavigator extends Component {
   _tabNavigator() {
     const {PopularPage, TrendingPage, FavoritePage, MyPage} = TABS;
     const tabs = {PopularPage, TrendingPage, FavoritePage, MyPage}; //根据需要定制显示的tab
     // PopularPage.navigationOptions.tabBarLabel = '最热1'//动态改变Tab属性
+    const themeColor = this.props.theme.themeColor || this.props.theme;
+    console.log('导航栏', themeColor);
+    const a = this.props;
+    console.log(a);
     return (
       <Tab.Navigator>
         {Object.entries(tabs).map(item => {
@@ -71,7 +77,10 @@ export default class DynamicTabNavigator extends Component {
               key={item[0]}
               name={item[0]}
               component={item[1].screen}
-              options={item[1].navigationOptions}
+              options={{
+                ...item[1].navigationOptions,
+                tabBarActiveTintColor: themeColor,
+              }}
             />
           );
         })}
@@ -83,3 +92,9 @@ export default class DynamicTabNavigator extends Component {
     return Tab;
   }
 }
+
+const mapStateToProps = state => ({
+  theme: state.theme.theme,
+});
+
+export default connect(mapStateToProps)(DynamicTabNavigator);
