@@ -5,7 +5,19 @@ const Tab = createMaterialTopTabNavigator();
 
 export function tabNav({Component, keys, theme, extra = ({} = {})}) {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        lazy: true,
+        tabBarItemStyle: styles.tabStyle,
+        tabBarScrollEnabled: true, //是否支持 选择卡滚动
+        tabBarInactiveTintColor: 'white',
+        tabBarActiveTintColor: 'white',
+        tabBarStyle: {
+          backgroundColor: theme.themeColor, //TabBar的背景色
+        },
+        tabBarIndicatorStyle: styles.indicatorStyle,
+        tabBarLabelStyle: styles.labelStyle,
+      }}>
       {Object.entries(_genTabs({Component, keys, theme, extra})).map(item => {
         return (
           <Tab.Screen
@@ -36,3 +48,18 @@ function _genTabs({Component, keys, theme, extra = ({} = {})}) {
   });
   return tabs;
 }
+
+const styles = StyleSheet.create({
+  tabStyle: {
+    padding: 0,
+  },
+  //   指示器的样式
+  indicatorStyle: {
+    backgroundColor: 'white',
+  },
+  labelStyle: {
+    textTransform: 'none',
+    fontSize: 13,
+    margin: 0,
+  },
+});
