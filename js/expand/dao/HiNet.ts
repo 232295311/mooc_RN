@@ -1,4 +1,5 @@
 import {getBoarding} from '../../utils/BoardingUtil';
+import NavigationUtil from '../../navigator/NavigationUtil';
 import Constants from './Constants';
 /**
  * 发送get请求  类似python里 requests.get
@@ -64,13 +65,14 @@ function handleData(doAction: Promise<any>) {
         return res.text();
       })
       .then(result => {
-        console.log(JSON.stringify(result));
+        console.log('handleData result~~~~:',JSON.stringify(result));
         if (typeof result === 'string') {
           throw new Error(result);
         }
         const {code, msg, data: {list = undefined} = {}} = result;
         if (code === 401) {
           // TODO: 跳转到我们的登陆页面
+          NavigationUtil.resetToLoginPage();
           return;
         }
         resolve(list || result);
